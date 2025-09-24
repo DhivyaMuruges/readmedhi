@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>To‑Do List — Vanilla JS</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--accent:#2b6cb0;--danger:#e53e3e;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#111}
+    .wrap{max-width:640px;margin:48px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    h1{margin:0;font-size:1.4rem}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(17,24,39,0.06)}
+
+    /* input row */
+    .input-row{display:flex;gap:8px;align-items:center}
+    input[type="text"]{flex:1;padding:12px 14px;border-radius:8px;border:1px solid #e6e9ef;font-size:1rem}
+    button#addBtn{padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    button#addBtn:disabled{opacity:0.6;cursor:not-allowed}
+
+    /* list */
+    ul#todoList{list-style:none;padding:0;margin:18px 0 0}
+    li.todo-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;border:1px solid #eef2f7;margin-bottom:8px}
+    .todo-left{display:flex;align-items:center;gap:12px;flex:1}
+    .checkbox{width:18px;height:18px;border-radius:4px;border:2px solid #cbd5e1;display:grid;place-items:center;cursor:pointer}
+    .checkbox.checked{background:linear-gradient(180deg,#2b6cb0,#2c5282);border-color:transparent;color:white}
+    .task-text{font-size:1rem}
+    .task-text.completed{text-decoration:line-through;opacity:0.6}
+
+    .controls{display:flex;gap:8px}
+    .btn-ghost{padding:8px;border-radius:8px;border:1px solid #e2e8f0;background:transparent;cursor:pointer}
+    .btn-danger{padding:8px;border-radius:8px;border:0;background:var(--danger);color:white;cursor:pointer}
+
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);font-size:0.9rem}
+
+    /* small responsive */
+    @media (max-width:480px){.wrap{margin:20px;padding:14px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="card" style="padding:12px;display:flex;align-items:center;gap:12px">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M3 7h18M7 11h10M9 15h6" stroke="#2b6cb0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1>Simple To‑Do (Vanilla JS)</h1>
+      </div>
+    </header>
+
+    <main class="card" style="margin-top:16px">
+      <div class="input-row">
+        <input id="taskInput" type="text" placeholder="Add a new task and press Enter or click Add" aria-label="New task" />
+        <button id="addBtn">Add</button>
+      </div>
+
+      <ul id="todoList" aria-live="polite" aria-label="To do list"></ul>
+
+      <div class="meta">
+        <div id="counts">0 tasks</div>
+        <div style="display:flex;gap:8px">
+          <button id="clearCompleted" class="btn-ghost">Clear completed</button>
+          <button id="clearAll" class="btn-ghost">Clear all</button>
+        </div>
+      </div>
+    </main>
+
+    <p style="margin-top:12px;color:var(--muted);font-size:0.95rem">Tip: Click the square to mark complete. Press Enter to quickly add.</p>
+  </div>
+
+  <script>
+    // Simple To-Do App (front-end only, Vanilla JS)
+    // Features: add, toggle complete, delete, clear completed/all, keyboard support, localStorage persistence
+
+    const taskInput = document.getElementById('taskInput');
+    const addBtn = document.getElementById('addBtn');
+    const todoList = document.getElementById('todoList');
+    const counts = document.getElementById('counts');
+    const clearCompleted = document.getElementById('clearCompleted');
+    const clearAll = document.getElementById('clearAll');
+
+    // app state: array of {id, text, done}
+    let tasks = [];
+
+    // --- persistence ---
+    const STORAGE_KEY = 'todo_vanilla_js_tasks_v1';
+    function loadTasks(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(raw) tasks = JSON.parse(raw);
+      }catch(e){ console.warn('Could not load tasks', e) }
+    }
+    function saveTasks(){
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }catch(e){console.warn('Could not save tasks', e)}
+    }
+
+    // --- rendering ---
+    function render(){
+      todoList.innerHTML = '';
+      if(tasks.length === 0){
+        const p = document.createElement('p');
+        p.style.color = '#6b7280';
+        p.style.margin = '12px 0 0';
+        p.textContent = 'No tasks yet — add your first one!';
+        todoList.appendChild(p);
+      } else {
+        tasks.forEach(task => {
+          const li = document.createElement('li');
+          li.className = 'todo-item';
+          li.dataset.id = task.id;
+
+          const left = document.createElement('div'); left.className = 'todo-left';
+
+          const cb = document.createElement('button');
+          cb.className = 'checkbox' + (task.done ? ' checked' : '');
+          cb.setAttribute('aria-label', task.done ? 'Mark as not done' : 'Mark as done');
+          cb.title = cb.getAttribute('aria-label');
+          cb.innerHTML = task.done ? '&#10003;' : '';
+
+          const span = document.createElement('div');
+          span.className = 'task-text' + (task.done ? ' completed' : '');
+          span.textContent = task.text;
+
+          left.appendChild(cb);
+          left.appendChild(span);
+
+          const ctrls = document.createElement('div'); ctrls.className = 'controls';
+          const editBtn = document.createElement('button'); editBtn.className='btn-ghost'; editBtn.textContent = 'Edit';
+          const delBtn = document.createElement('button'); delBtn.className='btn-danger'; delBtn.textContent = 'Delete';
+
+          // edit (simple inline edit)
+          editBtn.addEventListener('click', ()=>{
+            const newText = prompt('Edit task:', task.text);
+            if(newText !== null){
+              const trimmed = newText.trim();
+              if(trimmed.length){ task.text = trimmed; saveTasks(); render(); }
+            }
+          });
+
+          delBtn.addEventListener('click', ()=>{
+            tasks = tasks.filter(t=>t.id !== task.id); saveTasks(); render();
+          });
+
+          // toggle
+          cb.addEventListener('click', ()=>{
+            task.done = !task.done; saveTasks(); render();
+          });
+
+          li.appendChild(left);
+          ctrls.appendChild(editBtn);
+          ctrls.appendChild(delBtn);
+          li.appendChild(ctrls);
+
+          todoList.appendChild(li);
+        });
+      }
+
+      const total = tasks.length;
+      const done = tasks.filter(t=>t.done).length;
+      counts.textContent = `${total} task${total!==1?'s':''} • ${done} completed`;
+    }
+
+    // --- helpers ---
+    function addTask(text){
+      const trimmed = text.trim();
+      if(trimmed.length === 0) return false;
+      const id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+      tasks.unshift({id, text: trimmed, done:false});
+      saveTasks();
+      render();
+      return true;
+    }
+
+    // --- events ---
+    addBtn.addEventListener('click', ()=>{
+      if(addTask(taskInput.value)) taskInput.value='';
+      taskInput.focus();
+    });
+
+    taskInput.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        if(addTask(taskInput.value)) taskInput.value='';
+      }
+    });
+
+    clearCompleted.addEventListener('click', ()=>{
+      tasks = tasks.filter(t=>!t.done); saveTasks(); render();
+    });
+
+    clearAll.addEventListener('click', ()=>{
+      if(confirm('Clear ALL tasks?')){ tasks = []; saveTasks(); render(); }
+    });
+
+    // init
+    loadTasks(); render();
+
+    // expose for debugging (optional)
+    window._todo = {get tasks(){return tasks}, add: addTask};
+  </script>
+</body>
+</html>
