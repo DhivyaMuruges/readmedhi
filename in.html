@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhivya M - Full-Page Portfolio</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- NEW FONT IMPORTS: Montserrat and Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* NEW COLOR PALETTE AND FONT DEFINITIONS */
+        :root {
+            --primary-color: #192A56; /* Dark Blue/Navy */
+            --secondary-color: #E55039; /* Coral Red/Accent */
+            --background-light: #f7f7f7;
+            --background-dark: #ffffff;
+            --text-dark: #333333;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; /* NEW FONT */
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            scroll-behavior: smooth; /* SMOOTH SCROLLING IMPLEMENTED */
+            /* Ensure the body takes up minimum 100% of the viewport height */
+            min-height: 100vh; 
+        }
+
+        /* Card styling with subtle lift and rounded corners */
+        .resume-card {
+            background-color: var(--background-dark);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+        }
+        .resume-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Unique header gradient style - UPDATED */
+        .unique-header {
+            background: linear-gradient(135deg, #ffffff 0%, #e0e9f7 100%); /* Light Blue/White Gradient */
+        }
+
+        /* Unique header text style - FONT UPDATED */
+        .section-header {
+            font-family: 'Playfair Display', serif; /* NEW FONT */
+            border-left: 4px solid var(--secondary-color); /* Section separator is now ACCENT color */
+            padding-left: 0.75rem;
+        }
+        
+        /* Highlight specific list items for better readability */
+        .highlight-item {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Ensure all text colors use the new dark color unless overridden by primary/secondary */
+        h1, h2, h3 {
+            color: var(--text-dark);
+        }
+
+        /* Requirement 3: CSS Media Query for Mobile (max-width 768px) */
+        @media (max-width: 768px) {
+            
+            /* Requirement 4: Stack columns vertically */
+            .main-layout {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            /* Requirement 5: Nav menu stack vertically */
+            .nav-menu {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-link {
+                text-align: center;
+                padding: 0.75rem 0;
+                margin-bottom: 0.5rem;
+                display: block; /* Ensures links take full width for easy tapping */
+            }
+
+            /* Requirement 4: Reduce font sizes for mobile readability */
+            .profile-name {
+                font-size: 2rem !important; /* From text-4xl */
+            }
+            .section-header {
+                font-size: 1.5rem !important; /* From text-2xl */
+            }
+
+            /* Main padding adjustment */
+            .container-wrapper {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <!-- Tailwind Config for Inter and Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'], /* UPDATED FONT */
+                        serif: ['Playfair Display', 'serif'], /* UPDATED FONT */
+                    },
+                    colors: {
+                        'primary': 'var(--primary-color)',
+                        'secondary': 'var(--secondary-color)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Main Wrapper - NOW FULL WIDTH with responsive padding for desktop -->
+    <!-- REMOVED: lg:px-24 xl:px-32 to maximize width -->
+    <div class="container-wrapper w-full">
+
+        <!-- Header - Name and Contact (UNIQUE STYLE APPLIED) -->
+        <!-- Adjusted padding for full width aesthetic, keeping p-6 for vertical spacing -->
+        <header class="text-center mb-8 py-6 unique-header rounded-none lg:rounded-xl shadow-lg border-b lg:border border-primary/20 mx-auto max-w-7xl lg:px-12 px-4">
+            <h1 class="text-4xl font-serif font-bold text-primary profile-name">Dhivya M</h1>
+            <p class="text-lg text-gray-600">Aspiring Computer Science Engineer | AI/ML & Java</p>
+            <div class="flex justify-center space-x-4 mt-3 text-sm">
+                <!-- Contact with SVG Icon -->
+                <a href="mailto:dhivya2004213@gmail.com" class="text-gray-700 hover:text-secondary transition-colors flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>dhivya2004213@gmail.com</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Navigation Menu (Requirement 5: Collapses/stacks vertically on mobile) -->
+        <nav class="mb-8 mx-auto max-w-7xl px-4 lg:px-0">
+            <ul class="flex justify-center space-x-6 nav-menu font-semibold text-gray-700">
+                <li><a href="#projects" class="nav-link hover:text-secondary transition-colors">Projects</a></li>
+                <li><a href="#experience" class="nav-link hover:text-secondary transition-colors">Experience</a></li>
+                <li><a href="#skills" class="nav-link hover:text-secondary transition-colors">Skills</a></li>
+                <li><a href="#education" class="nav-link hover:text-secondary transition-colors">Education</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content (Requirement 4: Two Columns on Desktop, Single Column on Mobile) -->
+        <main class="flex lg:flex-row flex-col gap-6 main-layout mx-auto max-w-7xl px-4 lg:px-0">
+
+            <!-- Left Column: Primary Content (Projects, Certifications) -->
+            <!-- ADJUSTED WIDTH TO lg:w-2/3 -->
+            <div class="lg:w-2/3 space-y-6">
+                
+                <!-- Technical Skills -->
+                <section id="skills" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Technical Skills & Expertise</h2>
+                    <p class="mb-4 text-gray-600">Strong foundation in Software Engineering concepts with a passion for Web Development and AI/ML application.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <!-- Styles adjusted to new palette -->
+                        <span class="bg-primary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">Web Development</span>
+                        <span class="bg-primary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">Software Engineering</span>
+                        <span class="bg-secondary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">Java</span>
+                        <span class="bg-secondary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">Python</span>
+                        <span class="bg-secondary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">HTML / CSS</span>
+                        <span class="bg-primary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">PHP</span>
+                        <span class="bg-primary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">Mobile App Development</span>
+                        <span class="bg-secondary text-white text-sm font-medium px-3 py-1 rounded-full shadow-md">DBMS (Basics)</span>
+                    </div>
+                </section>
+
+                <!-- Academic Projects -->
+                <section id="projects" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Academic Projects</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 border-b border-gray-100 bg-gray-50/50 rounded-lg hover:bg-secondary/10 transition">
+                            <h3 class="font-semibold text-lg text-primary flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                                <span>Travel Recommendation Web Application</span>
+                            </h3>
+                            <!-- Bold removed from content -->
+                            <p class="text-sm text-gray-600">Developed a web application that suggests personalized travel destinations. The system integrates AI algorithms and processes real-time data to match user preferences, showcasing skills in full-stack development and data integration.</p>
+                        </div>
+                        <div class="p-4 border-b border-gray-100 bg-gray-50/50 rounded-lg hover:bg-secondary/10 transition">
+                            <h3 class="font-semibold text-lg text-primary flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M15 14c.2-1 .9-1.6 2-2 1.1-.9 1.9-2.2 1.9-3.5A2.5 2.5 0 0 0 16 7c-.5 0-1 .2-1.4.6"></path><path d="M9 13c-1.5 0-3-.6-3-2c0-.7.3-1.4.8-1.9"></path><path d="M16 17H5a3 3 0 0 0 0 6h11M19 12h-1M19 17h-1"></path><circle cx="12" cy="10" r="1.5"></circle></svg>
+                                <span>Action Recognition & Alert System (LSTM)</span>
+                            </h3>
+                            <!-- Bold removed from content -->
+                            <p class="text-sm text-gray-600">Engineered a real-time Action Recognition and Alert System primarily for use in rehabilitation centers. The system utilized LSTM models with OpenCV and TensorFlow to analyze video feeds and automatically detect abnormal patient activities.</p>
+                        </div>
+                        <div class="p-4 border-b border-gray-100 bg-gray-50/50 rounded-lg hover:bg-secondary/10 transition">
+                            <h3 class="font-semibold text-lg text-primary flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M12 20a8 8 0 0 0 8-8c0-1.85-1.55-3.62-3.26-4.9c-2.9-2.18-7.3-1.78-9.45.9-2.15 2.68-1.6 7.22 1.34 9.4A8 8 0 0 0 12 20z"></path></svg>
+                                <span>Calories Burnt Prediction (ML Model)</span>
+                            </h3>
+                            <!-- Bold removed from content -->
+                            <p class="text-sm text-gray-600">Constructed a Machine Learning model to accurately predict calories burnt during various physical activities. This involved data preprocessing, feature engineering, and deploying a Regression model to provide predictive analytics.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50/50 rounded-lg hover:bg-secondary/10 transition">
+                            <h3 class="font-semibold text-lg text-primary flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM10 17l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+                                <span>Fruit Quality Detection (Image Processing)</span>
+                            </h3>
+                            <!-- Bold removed from content -->
+                            <p class="text-sm text-gray-600">Implemented an Image Processing system for quality control in agricultural produce. The model employed ML classification algorithms to analyze image features like texture, color, and shape, effectively detecting and classifying fruit quality.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Certifications -->
+                <section id="certifications" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Certifications</h2>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-600">
+                        <li class="highlight-item">Full Stack Development - Infosys Springboard, NSDC</li>
+                        <li class="highlight-item">Artificial Intelligence & DBMS - LinkedIn Learning, Infosys Springboard</li>
+                        <li>Augmented & Virtual Reality - Creators of Metaverse</li>
+                        <li>UI/UX Designer for Beginners - Great Learning</li>
+                        <li>Digital Marketing, Artificial Intelligence - Accenture Digital Skills</li>
+                    </ul>
+                </section>
+            </div>
+
+            <!-- Right Column: Sidebar Content (Experience, Education, NEW SECTIONS) -->
+            <!-- ADJUSTED WIDTH TO lg:w-1/3 -->
+            <div class="lg:w-1/3 space-y-6">
+                
+                <!-- Internship Experience -->
+                <section id="experience" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Experience</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="p-3 border-b border-gray-100">
+                            <h3 class="font-semibold text-lg">AI & Machine Learning Intern</h3>
+                            <p class="text-sm italic text-gray-500">YBI Foundation (Jun-Jul 2024)</p>
+                        </div>
+                        <div class="p-3 border-b border-gray-100">
+                            <h3 class="font-semibold text-lg">Data Analytics Intern</h3>
+                            <p class="text-sm italic text-gray-500">(May-Jun 2024)</p>
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-semibold text-lg">Java Programming Intern</h3>
+                            <p class="text-sm italic text-gray-500">InternPe (May-Jun 2024)</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Achievements & Leadership (Made Denser with Awards/Workshops) -->
+                <section id="achievements" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Achievements & Leadership</h2>
+                    
+                    <div class="space-y-3 text-sm text-gray-600">
+                        <p class="font-semibold text-secondary">Hackathons & Awards</p>
+                        <ul class="list-disc list-inside pl-3 space-y-1">
+                            <li>Smart India, Design Impact, and Eco Creativity & Innovation Hackathons.</li>
+                            <li>**Awards:** 1st Place - Aptitude Blender, Kagitha Kaivinai (Adhiyamaan College); 3rd Place - KIMO Infinitum.</li>
+                            <li>Cleared Chapter & National Level - Srinivasa Ramanujan Math Competitions (ISTE).</li>
+                        </ul>
+
+                        <p class="font-semibold pt-3 text-secondary">Publications & Workshops</p>
+                        <ul class="list-disc list-inside pl-3 space-y-1">
+                            <li>**Publications:** AI in Education: Transformative Technologies, Animal Classification using CNN.</li>
+                            <li>**Workshops:** IoT, Web Design, AR/VR.</li>
+                        </ul>
+
+                        <p class="font-semibold pt-3 text-secondary">Leadership Roles</p>
+                        <ul class="list-disc list-inside pl-3 space-y-1">
+                            <li>Programming Secretary - IEI.</li>
+                            <li>Active Member - ISTE, IETE, CSI.</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Additional Information -->
+                <section id="info" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Additional Information</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-semibold text-base text-secondary">Soft Skills</p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="bg-secondary/30 text-primary text-xs px-2 py-0.5 rounded-full">Teamwork</span>
+                                <span class="bg-secondary/30 text-primary text-xs px-2 py-0.5 rounded-full">Leadership</span>
+                                <span class="bg-secondary/30 text-primary text-xs px-2 py-0.5 rounded-full">Problem-Solving</span>
+                                <span class="bg-secondary/30 text-primary text-xs px-2 py-0.5 rounded-full">Adaptability</span>
+                            </div>
+                        </div>
+                        <div class="pt-1">
+                            <p class="font-semibold text-base text-secondary">Languages & Tools</p>
+                            <!-- Bold removed from content -->
+                            <p class="text-sm mt-1">Languages: Tamil, English (Read & Write)</p>
+                            <p class="text-sm">Tools: MS Office, Canva</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Education (Added SSLC entry for completeness and balance) -->
+                <section id="education" class="p-6 resume-card">
+                    <h2 class="text-2xl font-bold mb-4 section-header text-primary">Education</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="font-semibold text-lg">B.E. Computer Science and Engineering</p>
+                            <p class="text-sm text-gray-600">Adhiyamaan College of Engineering, Hosur</p>
+                            <p class="text-xs text-gray-500">Expected 2025 | CGPA: 8.36</p>
+                        </div>
+                        <!-- Tightened spacing from pt-2 to pt-3 and added SSLC -->
+                        <div class="border-t pt-3">
+                            <p class="font-semibold text-base">HSC (Maths & Biology)</p>
+                            <p class="text-sm text-gray-600">Govt Mpl Girls Hr Sec School | 2021</p>
+                        </div>
+                        <div class="border-t pt-3">
+                            <p class="font-semibold text-base">Secondary School Leaving Certificate (SSLC)</p>
+                            <p class="text-sm text-gray-600">Govt Mpl Girls Hr Sec School | 2019</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-10 py-4 text-center text-sm text-gray-500 border-t border-gray-200">
+            <p>Made Responsive and Full-Width using Tailwind CSS | Tested at $\text{max-width}: 768\text{px}$</p>
+        </footer>
+
+    </div>
+</body>
+</html>
